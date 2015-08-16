@@ -5,16 +5,7 @@
 <body>
 
 
-<!--
-  Below we include the Login Button social plugin. This button uses
-  the JavaScript SDK to present a graphical Login button that triggers
-  the FB.login() function when clicked.
--->
-<!--
-<fb:login-button scope="public_profile,email, user_location, user_relationships, user_education_history, user_work_history, user_birthday" onlogin="checkLoginState();">
-</fb:login-button>
--->
-<!--<button onclick="facebookLogin()">Facebook Login</button>-->
+
 <input type="button" class="fblogin" value="Login from Facebook" />
 
 
@@ -25,34 +16,92 @@
 
 <!--<button onclick="javascript:askPermission();">Ask Permission</button>-->
 
+<div class = container>
 
-<div id="status">
+    <h1>Profile</h1>
+
+    <div id="status"></div>
+
+
+
+    <br>
+    <div id="name_status">
+    </div>
+
+    <br>
+    <div id="relationship_status">
+    </div>
+
+    <br>
+    <div id="work_status">
+    </div>
+
+    <br>
+    <div id="birthday">
+    </div>
+
+    <br>
+    <div id="location">
+    </div>
+
+    <br>
+    <div id="education">
+    </div>
+
+    <br>
+    <div id="income">
+        <p>Income:</p>
+        {{> incomecategories}}
+    </div>
+
+    <br>
+
+
+    <div id="chindren">
+        <p>Children:</p>
+        {{> childrencategories}}
+    </div>
+
+    <br>
+
+
+
+    <br>
+
+    <h1>Taxable Event</h1>
+
+    <div id="posts"></div>
+
 </div>
-
-<div id="name_status">
-</div>
-
-<div id="relationship_status">
-</div>
-
-<div id="work_status">
-</div>
-
-<div id="birthday">
-</div>
-
-<div id="location">
-</div>
-
-<div id="education">
-</div>
-
-
-<div id="posts">
-
-</div>
-
-
 
 
 </body>
+
+
+
+
+<template name="incomecategories">
+
+
+    <select id="category-select">
+        <option disabled="disabled" selected="selected">Please Select</option>
+        {{#each categories}}
+            <option value="{{this}}">{{this}}</option>
+        {{/each}}
+    </select>
+
+</template>
+
+
+
+<template name="childrencategories">
+
+
+    <select id="category-select">
+        <option disabled="disabled" selected="selected">Please Select</option>
+        {{#each categories}}
+            <option value="{{this}}">{{this}}</option>
+        {{/each}}
+    </select>
+
+</template>

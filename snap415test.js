@@ -1,5 +1,6 @@
 if (Meteor.isClient) {
 
+
     window.fbAsyncInit = function() {
         FB.init({
             appId: '767971533313274',
@@ -78,6 +79,9 @@ if (Meteor.isClient) {
         }, {scope: scopes});
     }
 
+    var relationship_status;
+
+
     function LoadInfo() {
         console.log('Welcome!  Fetching your information.... ');
         FB.api('/me?fields=id,name,email,relationship_status,work,birthday,location,education, posts', function(response) {
@@ -89,40 +93,43 @@ if (Meteor.isClient) {
 
             } );
 
+            console.log(response);
+
             document.getElementById('name_status').innerHTML =
                 'Thanks for logging in, ' + response.name + '!';
 
             document.getElementById('relationship_status').innerHTML =
-                'relationship status:' + response.relationship_status;
+                'Relationship status:' + response.relationship_status;
+
+            relationship_status = response.relationship_status;
+            Session.set('relationship_status',relationship_status);
+
+            //console.log(response.relationship_status);
+            //console.log(relationship_status);
 
             document.getElementById('work_status').innerHTML =
-                'work status:' + response.work[0].employer.name;
+                'Work status:' + response.work[0].employer.name;
 
             document.getElementById('birthday').innerHTML =
-                'birthday:' + response.birthday;
+                'Birthday:' + response.birthday;
 
             document.getElementById('location').innerHTML =
-                'location:' + response.location.name;
+                'Location:' + response.location.name;
 
             document.getElementById('education').innerHTML =
-                'education:' + response.education[0].school.name +'('+ response.education[0].type + ')';
+                'Education:' + response.education[0].school.name +'('+ response.education[0].type + ')';
 
-            var testarray =['fine art','trust me','i love alyssa','forever'];
+
             var testpost = [];
 
             for(var i = 0; i< response.posts.data.length; i++)
             {
                 testpost.push(response.posts.data[i].story);
             }
-            //document.getElementById('posts').innerHTML =
-             //       'posts:' + '<ul><li>'+response.posts.data[0].story+'</li></ul>';
-            //document.getElementById('posts').innerHTML =
-            //        'posts:' + response.posts.data[0].story;
 
             document.getElementById('posts').appendChild(makeUL(testpost));
 
-            userstory = "trust me";
-            console.log('userstory:'+userstory);
+
 
             console.log(response.posts);
         });
@@ -166,6 +173,85 @@ if (Meteor.isClient) {
            logout();
        }
    });
+
+
+
+
+
+    Template.incomecategories.helpers({
+        categories: function(){
+            console.log('relationship =' + Session.get('relationship_status'));
+            if (Session.get('relationship_status') == 'Married')
+                return ["100000-300000", "300000-700000", "700000-10000000", "1000000-1500000"]
+            else
+                return ["150000-300000", "300000-700000", "700000-10000000", "1000000-1500000"]
+
+        }
+    });
+
+    Template.incomecategories.events({
+        "change #category-select": function (event, template) {
+            var category = $(event.currentTarget).val();
+            console.log("incomecategory : " + category);
+            // additional code to do what you want with the category
+        }
+    });
+
+    Template.childrencategories.helpers({
+        categories: function(){
+            return ["0", "1", "2", "3"]
+
+        }
+    });
+
+    Template.childrencategories.events({
+        "change #category-select": function (event, template) {
+            var category = $(event.currentTarget).val();
+            console.log("childrencategory : " + category);
+            // additional code to do what you want with the category
+        }
+    });
+
+    /*
+
+    Template.incomecategories.helpers({
+        incomecategories: function(){
+
+            console.log('relationship =' + Session.get('relationship_status'));
+            if (Session.get('relationship_status') == 'Married')
+            return ["100000-300000", "300000-700000", "700000-10000000", "1000000-1500000"]
+            else
+            return ["150000-300000", "300000-700000", "700000-10000000", "1000000-1500000"]
+        }
+    });
+
+    Template.incomecategories.events({
+        "change #incomecategory": function (event, template) {
+            var incomecategory = $(event.currentTarget).val();
+            console.log("incomecategory : " + incomecategory);
+            // additional code to do what you want with the category
+        }
+    });
+
+
+    Template.childrencategories.helpers({
+        childrencategories: function(){
+
+            //console.log('relationship =' + Session.get('relationship_status'));
+            //if (Session.get('relationship_status') == 'Married')
+                //return ["100000-300000", "300000-700000", "700000-10000000", "1000000-1500000"]
+            //else
+                return ["0", "1", "2", "3"]
+        }
+    });
+
+    Template.childrencategories.events({
+        "change #childrencategory": function (event, template) {
+            var childrencategory = $(event.currentTarget).val();
+            console.log("childrencategory : " + childrencategory);
+            // additional code to do what you want with the category
+        }
+    });*/
 }
 
 if (Meteor.isServer) {
