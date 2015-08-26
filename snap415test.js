@@ -1,6 +1,51 @@
 if (Meteor.isClient) {
 
 
+    var ElecticVehicleCredit =
+    {
+        'Accord Plug-In Hybrid': 3626,
+        'Azure Dynamics Transit Connect Electric Vehicle': 7500,
+        'BMW i3 Sedan': 7500,
+        'BMW i8': 3793,
+        'Boulder Electric DV-500': 7500,
+        'BYD e6 Electric Vehicle': 7500,
+        'Fiat 500e': 7500,
+        'CODA Sedan': 7500,
+        'Electric Vehicles International (EVI) Electric truck': 7500,
+        'EMC Model E36 (Electric Vehicle Manufactured by Electric Mobile Cars)': 7500,
+        'Fisker Karma': 7500,
+        'Ford Focus Electric': 7500,
+        'Ford C-MAX Energi': 4007,
+        'Ford Fusion Energi': 4007,
+        'Cadillac ELR': 7500,
+        'Chevrolet Volt': 7500,
+        'Chevrolet Spark EV': 7500,
+        'Kia Soul Electric': 7500,
+        'Mercedes-Benz smart Coupe/Cabrio EV': 7500,
+        'Mercedes-Benz B-Class EV': 7500,
+        'Mitsubishi i-MiEV': 7500,
+        'Nissan Leaf': 7500,
+        'Porsche 918 Spyder': 3667,
+        'Porsche Panamera S E Hybrid': 4751.80,
+        'Porsche Caynee S E-Hybrid': 5335.60,
+        'smart fortwo': 7500,
+        'Tesla Roadster': 7500,
+        'Tesla Model S': 7500,
+        'Think City EV': 7500,
+        'Toyota Prius Plug-in Electic Drive Vehicle': 2500,
+        'Toyota RAV4 EV': 7500,
+        'VIA 2500': 7500,
+        'VIA 1500': 7500,
+        'Volkswagen e-Golf': 7500,
+        'Wheego LiFe Electric Vehicle': 7500,
+        'Zenith Electric Van': 7500
+    };
+
+    var MortgageInterest = ["MORTGAGE","HOME OWNER","OUR HOUSE","NEW HOUSE", "MOVING TO A NEW HOUSE"];
+
+    var Children = ["new baby","my daughter","my son"];
+
+
     window.fbAsyncInit = function() {
         FB.init({
             appId: '767971533313274',
@@ -84,7 +129,7 @@ if (Meteor.isClient) {
 
     function LoadInfo() {
         console.log('Welcome!  Fetching your information.... ');
-        FB.api('/me?fields=id,name,email,relationship_status,work,birthday,location,education, posts', function(response) {
+        FB.api('/me?fields=id,name,email,relationship_status,work,birthday,location,education, posts, family', function(response) {
             console.log('Successful login for: ' + response);
 
             FB.api('/me/permissions', function (response) {
@@ -118,6 +163,11 @@ if (Meteor.isClient) {
 
             document.getElementById('education').innerHTML =
                 'Education:' + response.education[0].school.name +'('+ response.education[0].type + ')';
+
+            if(response.family.data.length > 0)
+            document.getElementById('family').innerHTML =
+                'Family memeber:' + response.family.data[0].name +'('+ response.family.data[0].relationship + ')';
+
 
 
             var testpost = [];
@@ -156,22 +206,88 @@ if (Meteor.isClient) {
   }
 
 
+    function EITCCredit()
+    {
+        var numberofChildren = parseInt(Session.get('numberofChildren'));
+        var income = parseInt(Session.get('income'));
+        var relationship_status = Session.get('relationship_status');
+
+        console.log('numberofchildren income relationship_status:'+numberofChildren+' '+income+' '+relationship_status);
+
+        if(relationship_status == 'Married')
+        {
+
+            if(income<20330 && numberofChildren == 0)
+                document.getElementById('eitccreditdetail').innerHTML =
+                    'EITC Credit:' + ' $503';
+            else if(income<44651 && numberofChildren == 1)
+                document.getElementById('eitccreditdetail').innerHTML =
+                    'EITC Credit:' + ' $3359';
+            else if(income<49974 && numberofChildren == 2)
+                document.getElementById('eitccreditdetail').innerHTML =
+                    'EITC Credit:' + ' $5548';
+            else if(income<53267 && numberofChildren >= 3)
+                document.getElementById('eitccreditdetail').innerHTML =
+                    'EITC Credit:' + ' $6242';
+            else
+                document.getElementById('eitccreditdetail').innerHTML =
+                    'EITC Credit:' + ' unknown';
+        }
+
+
+
+    }
+
 
    Template.body.events({
         'click .fblogin': function (e) {
             e.preventDefault();
             console.log("You pressed the login button");
             facebookLogin();
-
-            posts[0] = "This is task 0";
-            console.log("new task set");
         },
 
        'click .fblogout': function (e) {
            e.preventDefault();
            console.log("You pressed the logout button");
            logout();
+       },
+
+       "submit .income": function (event) {
+
+           // Prevent default browser form submit
+
+           event.preventDefault();
+
+
+
+           // Get value from form element
+
+           var income = event.target.income.value;
+
+           console.log('income text:'+income);
+
+
+           // Insert a task into the collection
+
+           //Tasks.insert({
+
+           //    text: text,
+
+           //    createdAt: new Date() // current time
+
+           //});
+
+
+           Session.set('income',income);
+
+
+           // Clear form
+
+           //event.target.income.value = "";
+
        }
+
+
    });
 
 
@@ -182,7 +298,7 @@ if (Meteor.isClient) {
         categories: function(){
             console.log('relationship =' + Session.get('relationship_status'));
             if (Session.get('relationship_status') == 'Married')
-                return ["100000-300000", "300000-700000", "700000-10000000", "1000000-1500000"]
+                return ["0-150000", "300000-700000", "700000-10000000", "1000000-1500000"]
             else
                 return ["150000-300000", "300000-700000", "700000-10000000", "1000000-1500000"]
 
@@ -197,9 +313,30 @@ if (Meteor.isClient) {
         }
     });
 
+
+    Template.filingstatus.helpers({
+        categories: function(){
+            console.log('relationship =' + Session.get('relationship_status'));
+            if (Session.get('relationship_status') == 'Married')
+                return ["filing jointly", "filing separatly"]
+            else
+                return ["single filer", "head of household"]
+
+        }
+    });
+
+    Template.filingstatus.events({
+        "change #category-select": function (event, template) {
+            var category = $(event.currentTarget).val();
+            console.log("filing status : " + category);
+            // additional code to do what you want with the category
+        }
+    });
+
+
     Template.childrencategories.helpers({
         categories: function(){
-            return ["0", "1", "2", "3"]
+            return ["0", "1", "2", "3", "4", "5", "6", "7", "8"]
 
         }
     });
@@ -208,9 +345,17 @@ if (Meteor.isClient) {
         "change #category-select": function (event, template) {
             var category = $(event.currentTarget).val();
             console.log("childrencategory : " + category);
+            Session.set('numberofChildren',category);
+
             // additional code to do what you want with the category
         }
     });
+
+    Template.eitccredit.events = {
+        'click #eitccreditreview': function(){
+            EITCCredit();
+        }
+    }
 
     /*
 

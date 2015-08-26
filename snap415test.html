@@ -49,10 +49,29 @@
     </div>
 
     <br>
+    <div id="family">
+    </div>
+
+
+    <br>
     <div id="income">
         <p>Income:</p>
-        {{> incomecategories}}
+        <form class="income">
+
+            <input type="text" name="income" placeholder="Type your income" />
+
+        </form>
     </div>
+
+
+    <br>
+
+
+    <div id="tax filing status">
+        <p>Filing status:</p>
+        {{> filingstatus}}
+    </div>
+
 
     <br>
 
@@ -71,6 +90,122 @@
     <h1>Taxable Event</h1>
 
     <div id="posts"></div>
+
+
+    <br>
+
+    <h1>Tax Credit</h1>
+
+    <br>
+    <h3>EITC Tax Credit</h3>
+
+    <div id="eitccredit">
+        {{> eitccredit}}
+
+    </div>
+
+
+    <br>
+    <h3>Child and Dependent Care Credit</h3>
+
+    <div id="eitccredit">
+        {{> eitccredit}}
+
+    </div>
+
+    <br>
+    <h3>American Opportunity Tax Credit</h3>
+
+    <div id="eitccredit">
+        {{> eitccredit}}
+
+    </div>
+
+    <br>
+    <h3>Lifetime Learning Credit</h3>
+
+    <div id="eitccredit">
+        {{> eitccredit}}
+
+    </div>
+
+    <br>
+    <h3>Mortgage Interest Credit</h3>
+
+    <div id="eitccredit">
+        {{> eitccredit}}
+
+    </div>
+
+    <br>
+    <h3>Plug-in Electric Drive Vehicle Credit</h3>
+
+    <div id="eitccredit">
+        {{> eitccredit}}
+
+    </div>
+
+
+    <h1>Tax Deduction</h1>
+
+    <br>
+    <h3>(Education)Student Loan Interest</h3>
+
+    <div id="eitccredit">
+        {{> eitccredit}}
+
+    </div>
+
+
+    <br>
+    <h3>(Education)Tuition and Fees Deduction</h3>
+
+    <div id="eitccredit">
+        {{> eitccredit}}
+
+    </div>
+
+
+    <br>
+    <h3>(Education)Work-Related Educational Expenses</h3>
+
+    <div id="eitccredit">
+        {{> eitccredit}}
+
+    </div>
+
+
+    <br>
+    <h3>(Itemized)Property Tax</h3>
+
+    <div id="eitccredit">
+        {{> eitccredit}}
+
+    </div>
+
+
+    <br>
+    <h3>(Itemized)Charitable Contributions</h3>
+
+    <div id="eitccredit">
+        {{> eitccredit}}
+
+    </div>
+
+
+    <br>
+    <h3>(Itemized)Moving Expenses</h3>
+
+    <div id="eitccredit">
+        {{> eitccredit}}
+
+    </div>
+
+
+
+    <br>
+
+    <h1>Total Tax Credit and Deduction</h1>
 
 </div>
 
@@ -103,5 +238,29 @@
             <option value="{{this}}">{{this}}</option>
         {{/each}}
     </select>
+
+</template>
+
+
+<template name="filingstatus">
+
+
+    <select id="category-select">
+        <option disabled="disabled" selected="selected">Please Select</option>
+        {{#each categories}}
+            <option value="{{this}}">{{this}}</option>
+        {{/each}}
+    </select>
+
+</template>
+
+
+
+<template name="eitccredit">
+     <input type="button" id="eitccreditreview" value="review credit" />
+
+    <br>
+
+    <p id="eitccreditdetail"></p>
 
 </template>
