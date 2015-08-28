@@ -1,45 +1,8 @@
 if (Meteor.isClient) {
 
 
-    var ElecticVehicleCredit =
-    {
-        'Accord Plug-In Hybrid': 3626,
-        'Azure Dynamics Transit Connect Electric Vehicle': 7500,
-        'BMW i3 Sedan': 7500,
-        'BMW i8': 3793,
-        'Boulder Electric DV-500': 7500,
-        'BYD e6 Electric Vehicle': 7500,
-        'Fiat 500e': 7500,
-        'CODA Sedan': 7500,
-        'Electric Vehicles International (EVI) Electric truck': 7500,
-        'EMC Model E36 (Electric Vehicle Manufactured by Electric Mobile Cars)': 7500,
-        'Fisker Karma': 7500,
-        'Ford Focus Electric': 7500,
-        'Ford C-MAX Energi': 4007,
-        'Ford Fusion Energi': 4007,
-        'Cadillac ELR': 7500,
-        'Chevrolet Volt': 7500,
-        'Chevrolet Spark EV': 7500,
-        'Kia Soul Electric': 7500,
-        'Mercedes-Benz smart Coupe/Cabrio EV': 7500,
-        'Mercedes-Benz B-Class EV': 7500,
-        'Mitsubishi i-MiEV': 7500,
-        'Nissan Leaf': 7500,
-        'Porsche 918 Spyder': 3667,
-        'Porsche Panamera S E Hybrid': 4751.80,
-        'Porsche Caynee S E-Hybrid': 5335.60,
-        'smart fortwo': 7500,
-        'Tesla Roadster': 7500,
-        'Tesla Model S': 7500,
-        'Think City EV': 7500,
-        'Toyota Prius Plug-in Electic Drive Vehicle': 2500,
-        'Toyota RAV4 EV': 7500,
-        'VIA 2500': 7500,
-        'VIA 1500': 7500,
-        'Volkswagen e-Golf': 7500,
-        'Wheego LiFe Electric Vehicle': 7500,
-        'Zenith Electric Van': 7500
-    };
+
+
 
     var MortgageInterest = ["MORTGAGE","HOME OWNER","OUR HOUSE","NEW HOUSE", "MOVING TO A NEW HOUSE"];
 
@@ -179,6 +142,8 @@ if (Meteor.isClient) {
 
             document.getElementById('posts').appendChild(makeUL(testpost));
 
+            Session.set('posts',testpost);
+
 
 
             console.log(response.posts);
@@ -237,6 +202,107 @@ if (Meteor.isClient) {
 
 
     }
+
+    var ElectricVehicleList =
+    {
+        'Accord Plug-In Hybrid': 3626,
+        'Azure Dynamics Transit Connect Electric Vehicle': 7500,
+        'BMW i3 Sedan': 7500,
+        'BMW i8': 3793,
+        'Boulder Electric DV-500': 7500,
+        'BYD e6 Electric Vehicle': 7500,
+        'Fiat 500e': 7500,
+        'CODA Sedan': 7500,
+        'Electric Vehicles International (EVI) Electric truck': 7500,
+        'EMC Model E36': 7500,
+        'Fisker Karma': 7500,
+        'Ford Focus Electric': 7500,
+        'Ford C-MAX Energi': 4007,
+        'Ford Fusion Energi': 4007,
+        'Cadillac ELR': 7500,
+        'Chevrolet Volt': 7500,
+        'Chevrolet Spark EV': 7500,
+        'Kia Soul Electric': 7500,
+        'Mercedes-Benz smart Coupe/Cabrio EV': 7500,
+        'Mercedes-Benz B-Class EV': 7500,
+        'Mitsubishi i-MiEV': 7500,
+        'Nissan Leaf': 7500,
+        'Porsche 918 Spyder': 3667,
+        'Porsche Panamera S E Hybrid': 4751.80,
+        'Porsche Caynee S E-Hybrid': 5335.60,
+        'smart fortwo': 7500,
+        'Tesla Roadster': 7500,
+        'Tesla Model S': 7500,
+        'Think City EV': 7500,
+        'Toyota Prius Plug-in Electic Drive Vehicle': 2500,
+        'Toyota RAV4 EV': 7500,
+        'VIA 2500': 7500,
+        'VIA 1500': 7500,
+        'Volkswagen e-Golf': 7500,
+        'Wheego LiFe Electric Vehicle': 7500,
+        'Zenith Electric Van': 7500
+    };
+
+    var ElectricVehicleSearchKeywords = [];
+
+    function ElectricVehicleCredit()
+    {
+        var posts = Session.get('posts');
+        var index;
+        var index1;
+        var index2;
+
+        var ElectricVehicles = Object.keys(ElectricVehicleList);
+
+        console.log(ElectricVehicles);
+
+        console.log(posts[0]);
+
+        // break each post into an array of search keywords
+        //for(index = 0; index< posts.length; ++index)
+        //{
+        //    var keywordarray = posts[index].match(/\S+/g);
+
+        //    console.log(keywordarray);
+
+            // for each keyword, search if it is contained in the key
+        //    for(index1 = 0; index1 < keywordarray.length; ++index1)
+        //    {
+        //        for(index2 = 0; index2 < ElectricVehicles.length; ++index2) {
+        //            var yyy = ElectricVehicles[index2];
+        //            var xxx = keywordarray[index1];
+        //            var rgxp = new RegExp(yyy, "gi");
+                    //console.log(xxx);
+                    //console.log(yyy);
+        //            if(xxx.match(rgxp) != null)
+        //                console.log('match found:' + xxx + ' ' + yyy);
+        //        }
+        //    }
+        //}
+
+        for(index = 0; index< ElectricVehicles.length; ++index)
+        {
+            var keywordarray = ElectricVehicles[index].match(/\S+/g);
+
+            console.log(keywordarray);
+
+            // for each keyword, search if it is contained in the key
+            for(index1 = 0; index1 < keywordarray.length; ++index1)
+            {
+                for(index2 = 0; index2 < posts.length; ++index2) {
+                    var xxx = posts[index2];
+                    var yyy ='\\b'+ keywordarray[index1]+'\\b';
+                    var rgxp = new RegExp(yyy, "gi");
+                    //console.log(xxx);
+                    //console.log(yyy);
+                    if(xxx.match(rgxp) != null)
+                        console.log('match found:' + xxx + ' ' + yyy);
+                }
+            }
+        }
+    }
+
+
 
 
    Template.body.events({
@@ -354,6 +420,12 @@ if (Meteor.isClient) {
     Template.eitccredit.events = {
         'click #eitccreditreview': function(){
             EITCCredit();
+        }
+    }
+
+    Template.electricvehiclecredit.events = {
+        'click #electricvehiclecreditreview': function(){
+            ElectricVehicleCredit();
         }
     }
 
